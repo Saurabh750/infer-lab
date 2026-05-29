@@ -9,16 +9,28 @@ from .loader import load_weights_from_hf
 
 @dataclass
 class GPT2Config:
+    embedding_dim: int
+    n_layers: int
+    n_att_heads: int
     vocab_size: int=50257
     max_seq_length: int=1024
-    embedding_dim: int=768
-    n_layers: int=12
-    n_att_heads: int=12
     dropout: float=0.0
 
     @classmethod
-    def set_config(cls, model_name: str):
-        
+    def gpt2_small(cls):
+        return cls(embedding_dim=768, n_layers=12, n_att_heads=12)
+
+    @classmethod
+    def gpt2_medium(cls):
+        return cls(embedding_dim=1024, n_layers=24, n_att_heads=16)
+
+    @classmethod
+    def gpt2_large(cls):
+        return cls(embedding_dim=1280, n_layers=36, n_att_heads=20)
+
+    @classmethod
+    def gpt2_xl(cls):
+        return cls(embedding_dim=1600, n_layers=48, n_att_heads=25)
 
 class GPT2Embeddings(nn.Module):
     def __init__(self, config: GPT2Config):
@@ -103,7 +115,19 @@ class GPT2Model(nn.Module):
 
 @register_model
 class GPT2LMHead(BaseModel):
-    model_name = "openai-community/gpt2"
+    model_names = [
+        "openai-community/gpt2",
+        "openai-community/gpt2-medium",
+        "openai-community/gpt2-large",
+        "openai-community/gpt2-xl"
+    ]
+
+    model_configs = {
+        "openai-community/gpt2": GPT2Config.gpt2_small,
+        "openai-community/gpt2-medium": GPT2Config.gpt2_medium,
+        "openai-community/gpt2-large": GPT2Config.gpt2_large,
+        "openai-community/gpt2-xl": GPT2Config.gpt2_xl
+    }
 
     def __init__(self, config):
         super().__init__()
@@ -117,7 +141,7 @@ class GPT2LMHead(BaseModel):
         return x
     
     @classmethod
-    def from_pretrained(cls) -> 'GPT2LMHead':
-
-        model = cls(GPT2Config())
-        return load_weights_from_hf(model)
+    def from_pretrained(cls, model_name) -> 'GPT2LMHead':
+        model_config = cls.model_configs[model_name]()
+        model = cls(model_config)
+        return load_weights_from_hf(model_name, model)

@@ -5,7 +5,7 @@ from models.registry import MODEL_REGISTRY
 
 class InferenceEngine:
     def __init__(self, model_name: str):
-        self.model = MODEL_REGISTRY[model_name].from_pretrained()
+        self.model = MODEL_REGISTRY[model_name].from_pretrained(model_name)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     def sample_token(self, logits: torch.Tensor, sampling_technique: str) -> int:
