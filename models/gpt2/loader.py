@@ -1,8 +1,10 @@
 from transformers import GPT2Model as HF_GPT2
+from typing import TYPE_CHECKING
 
-from .model import GPT2LMHead
+if TYPE_CHECKING:
+  from .model import GPT2LMHead
 
-def load_weights_from_hf(model: GPT2LMHead) -> GPT2LMHead:
+def load_weights_from_hf(model: 'GPT2LMHead') -> 'GPT2LMHead':
     hf_model = HF_GPT2.from_pretrained(model.model_name)
     sd = hf_model.state_dict()
 

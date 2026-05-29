@@ -4,8 +4,8 @@ import math
 from dataclasses import dataclass
 
 from models.base import BaseModel
-from registry import register_model
-from loader import load_weights_from_hf
+from ..registry import register_model
+from .loader import load_weights_from_hf
 
 @dataclass
 class GPT2Config:
@@ -15,6 +15,10 @@ class GPT2Config:
     n_layers: int=12
     n_att_heads: int=12
     dropout: float=0.0
+
+    @classmethod
+    def set_config(cls, model_name: str):
+        
 
 class GPT2Embeddings(nn.Module):
     def __init__(self, config: GPT2Config):
@@ -113,7 +117,7 @@ class GPT2LMHead(BaseModel):
         return x
     
     @classmethod
-    def from_pretrained(cls, model_name) -> 'GPT2LMHead':
+    def from_pretrained(cls) -> 'GPT2LMHead':
 
         model = cls(GPT2Config())
         return load_weights_from_hf(model)
