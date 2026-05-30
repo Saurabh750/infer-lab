@@ -1,3 +1,4 @@
+import torch
 from transformers import GPT2Model as HF_GPT2
 from typing import TYPE_CHECKING
 
@@ -27,5 +28,7 @@ def load_weights_from_hf(model_name: str, model: 'GPT2LMHead') -> 'GPT2LMHead':
       model.gpt2model.gpt2blocks[i].mlp.c_proj.weight.data.copy_(sd[f'h.{i}.mlp.c_proj.weight'].T)
       model.gpt2model.gpt2blocks[i].mlp.c_proj.bias.data.copy_(sd[f'h.{i}.mlp.c_proj.bias'])
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
     model.eval()
     return model
