@@ -10,3 +10,7 @@ class BaseModel(ABC, nn.Module):
     @abstractmethod
     def from_pretrained(cls, model_name) -> 'BaseModel': 
         pass
+
+    @classmethod
+    def configure_tokenizer(cls, tokenizer):
+        pass

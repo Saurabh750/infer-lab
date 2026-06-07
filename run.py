@@ -11,8 +11,8 @@ def main():
     
     engine = InferenceEngine('openai-community/gpt2')
 
-    for prompt in prompts:
-        print(engine.generate(prompt, max_new_tokens=25))
+    # for prompt in prompts:
+    print(engine.generate(prompts, max_new_tokens=25))
 
 if __name__ == '__main__':
     main()

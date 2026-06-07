@@ -145,3 +145,8 @@ class GPT2LMHead(BaseModel):
         model_config = cls.model_configs[model_name]()
         model = cls(model_config)
         return load_weights_from_hf(model_name, model)
+    
+    @classmethod
+    def configure_tokenizer(cls, tokenizer):
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token
