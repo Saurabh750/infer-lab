@@ -21,8 +21,6 @@ class StandardKVCache(KVCache):
         self.head_dim = head_dim
         self.device = device
         
-        # self.k_cache = torch.zeros((self.n_layers, self.n_heads, self.head_dim), device=self.device)
-        # self.v_cache = torch.zeros((self.n_layers, self.n_heads, self.head_dim), device=self.device)
         self.k_cache, self.v_cache = [None]*self.n_layers, [None]*self.n_layers
 
     def read(self, layer_idx: int):
