@@ -6,7 +6,8 @@ def main():
                 'Who is Albert Einstein?', 
                 'Who is President of India?',
                 'Which is the best trek in Europe?',
-                'What is the national animal of Russia?' 
+                'What is the national animal of Russia?',
+                'What is the best scenic place to visit in Switzerland?'
             ]
     
     engine = InferenceEngine('openai-community/gpt2')

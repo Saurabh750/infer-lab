@@ -41,7 +41,7 @@ class GPT2Embeddings(nn.Module):
 
     def forward(self, token_ids, prompt_length: int): # returns shape (B,T,C)
         B, T = token_ids.shape
-        pos_indices = torch.arange(prompt_length + T, device=token_ids.device)
+        pos_indices = torch.arange(prompt_length, prompt_length + T, device=token_ids.device)
         return self.token_embd(token_ids) + self.pos_embd(pos_indices)
     
 class GPT2Attention(nn.Module):
